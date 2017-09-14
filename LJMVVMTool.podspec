@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
 
   s.name         = "LJMVVMTool"
 
-  s.version      = "0.0.7"
+  s.version      = "0.0.2"
 
   s.summary      = "基于RAC实现响应式编程的工具类."
 
