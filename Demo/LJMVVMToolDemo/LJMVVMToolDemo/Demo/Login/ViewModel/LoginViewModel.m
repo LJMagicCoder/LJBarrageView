@@ -36,6 +36,7 @@
     
     // 3.处理登录请求返回的结果
     [_loginCommand.executionSignals.switchToLatest subscribeNext:^(id x) {
+        //打印数据
         NSLog(@"%@",x);
     }];
     
