@@ -15,7 +15,6 @@
                      @"NextViewModel":@"NextViewController"
                      };
         }];
-        
         return YES;
     }
 
@@ -23,3 +22,5 @@
 
      ViewController *vc = [[ViewController alloc] initWithViewModel:[ViewModel new]];
     
+
+
