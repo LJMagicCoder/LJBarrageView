@@ -3,8 +3,6 @@
 对该轮子有什么不满或者建议可以在简书的评论区里留言给我。
 
 
-
-<<<<<<< HEAD
 其中在UIView+LJBarrageTool.h里提供了简单集成的方法。
 
     /*!
@@ -61,21 +59,4 @@
 
 
 通过LJBarrageView.h里的参数进行详细的设置，也可以通过协议对样式进行重构。
-=======
-     - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-        
-        //设置映射管理
-        [[LJRouter sharedManager] viewModelWithMapping:^NSDictionary *{
-            return @{
-                     @"DemoViewModel":@"DemoViewController",
-                     @"NextViewModel":@"NextViewController"
-                     };
-        }];
-        return YES;
-    }
->>>>>>> e728692e532b3dfc27fc8159c7d42168b28c8069
-
-
-    
-
 
