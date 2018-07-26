@@ -1,7 +1,8 @@
 # LJBarrageView是一款支持长连接不断传入数据的弹幕。
 
-对该轮子有什么不满或者建议可以在简书的评论区里留言给我。
+对该轮子有什么不满或者建议可以在[简书](https://www.jianshu.com/p/975946afc03d)的评论区里留言给我。
 
+支持 pod 'LJBarrageView'
 
 其中在UIView+LJBarrageTool.h里提供了简单集成的方法。
 
