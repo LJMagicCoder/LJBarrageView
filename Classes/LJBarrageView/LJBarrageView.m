@@ -130,7 +130,7 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
     self.hidden = YES;
 }
 
-- (void)showBarrageWithRow:(NSInteger)row text:(id)text enter:(void (^)(NSInteger row))enter finishShow:(void (^)())finishShow {
+- (void)showBarrageWithRow:(NSInteger)row text:(id)text enter:(void (^)(NSInteger row))enter finishShow:(void (^)(void))finishShow {
     
     CGFloat maxY = [self getBarrageHeightWithRow:row];
     
