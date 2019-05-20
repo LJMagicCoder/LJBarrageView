@@ -70,6 +70,11 @@
     return label;
 }
 
+//单次点击弹幕
+- (void)clickBarrageWithLabel:(UILabel *)label text:(id)text {
+    NSLog(@"click text = %@", text);
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

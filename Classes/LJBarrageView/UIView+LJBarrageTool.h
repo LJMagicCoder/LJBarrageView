@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LJBarrageView.h"
+#import "UILabel+LJBarrageBind.h"
 
 @interface UIView (LJBarrageTool)
 

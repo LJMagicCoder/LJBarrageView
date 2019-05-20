@@ -26,6 +26,9 @@ typedef NS_ENUM(NSUInteger,BarrageHeightType) {
 //重构弹幕样式
 - (UILabel *)refactoringLabel:(UILabel *)label text:(id)text;
 
+//单次点击弹幕
+- (void)clickBarrageWithLabel:(UILabel *)label text:(id)text;
+
 @end
 
 @interface BarrageStyle : NSObject

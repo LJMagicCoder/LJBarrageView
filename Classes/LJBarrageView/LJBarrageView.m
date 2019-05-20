@@ -7,6 +7,7 @@
 //
 
 #import "LJBarrageView.h"
+#import "UILabel+LJBarrageBind.h"
 
 typedef NS_ENUM(NSUInteger,BarrageShowType) {
     BarrageTypeStop,
@@ -103,7 +104,7 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
 - (void)loadUI {
     
     self.layer.masksToBounds = YES;
-
+    
     //默认参数
     self.barrageRow = LJBarrageRow;
     self.barrageRowHeight = LJBarrageRowHeight;
@@ -135,6 +136,7 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
     CGFloat maxY = [self getBarrageHeightWithRow:row];
     
     UILabel *label = [self getReuseBarrageLabel];
+    label.lj_barrageText = text;
     
     if ([text isKindOfClass:[NSMutableAttributedString class]]) {
         NSMutableAttributedString *attributedText = text;
@@ -266,6 +268,7 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.barrageEnterInterval * NSEC_PER_SEC)), self.barrageQueue, ^{
         
         __strong typeof (weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) return;
         
         dispatch_semaphore_wait(strongSelf.barrageMaxEnterSemaphore, DISPATCH_TIME_FOREVER);
         
@@ -364,6 +367,36 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
         
         for (int i = 0; i < barrageRow; i++) {
             [self.showRows addObject:@NO];
+        }
+    }
+}
+
+- (void)setDelegate:(id<LJBarrageViewDelegate>)delegate {
+    _delegate = delegate;
+    [self loadTapGesture];
+}
+
+- (void)loadTapGesture {
+    
+    if ([_delegate respondsToSelector:@selector(clickBarrageWithLabel:text:)]) {
+        UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickBarrage:)];
+        gesture.numberOfTapsRequired = 1;
+        [self addGestureRecognizer:gesture];
+    }
+}
+
+- (void)clickBarrage:(UITapGestureRecognizer*)gesture {
+    
+    CGPoint touchPoint = [gesture locationInView:self];
+    for(UIView *subView in self.subviews){
+        if([subView isKindOfClass:[UILabel class]]){
+            CALayer *layer = subView.layer.presentationLayer;
+            if(CGRectContainsPoint(layer.frame, touchPoint)){
+                UILabel *label = (UILabel *)subView;
+                if ([self.delegate respondsToSelector:@selector(clickBarrageWithLabel:text:)]) {
+                    [self.delegate clickBarrageWithLabel:label text:label.lj_barrageText];
+                }
+            }
         }
     }
 }
