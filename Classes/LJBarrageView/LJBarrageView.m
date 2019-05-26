@@ -7,7 +7,7 @@
 //
 
 #import "LJBarrageView.h"
-#import "UILabel+LJBarrageBind.h"
+#import "UIView+LJBarrageBind.h"
 
 typedef NS_ENUM(NSUInteger,BarrageShowType) {
     BarrageTypeStop,
@@ -128,31 +128,36 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
 
 - (void)shut {
     self.barrageSwitchType = BarrageTypeShut;
+    self.texts = nil;
     self.hidden = YES;
 }
 
 - (void)showBarrageWithRow:(NSInteger)row text:(id)text enter:(void (^)(NSInteger row))enter finishShow:(void (^)(void))finishShow {
     
-    CGFloat maxY = [self getBarrageHeightWithRow:row];
-    
-    UILabel *label = [self getReuseBarrageLabel];
-    label.lj_barrageText = text;
+    UIView *view = [self getReuseBarrageLabel];
+    view.lj_barrageText = text;
     
     if ([text isKindOfClass:[NSMutableAttributedString class]]) {
         NSMutableAttributedString *attributedText = text;
-        if (attributedText.length) label.attributedText = attributedText;
+        if (attributedText.length) view.lj_barrageLabel.attributedText = attributedText;
     } else if ([text isKindOfClass:[NSString class]]){
         NSString *stringText = text;
-        if (stringText.length) label.text = stringText;
+        if (stringText.length) view.lj_barrageLabel.text = stringText;
     }
     
-    [label sizeToFit];
+    [view.lj_barrageLabel sizeToFit];
     
-    if ([self.delegate respondsToSelector:@selector(refactoringLabel:text:)]) label = [self.delegate refactoringLabel:label text:text];
+    CGFloat maxY = [self getBarrageHeightWithRow:row rowHeight:self.barrageStyle.barrageHeight];
+
+    CGFloat barrageWidth = view.lj_barrageLabel.bounds.size.width + 10;
+    view.frame = CGRectMake(self.frame.size.width, maxY, barrageWidth, self.barrageStyle.barrageHeight);
+    view.lj_barrageLabel.frame = view.bounds;
     
-    CGFloat barrageWidth = label.bounds.size.width + 10;
-    label.frame = CGRectMake(self.frame.size.width, maxY, barrageWidth, self.barrageStyle.barrageHeight);
+    if ([self.delegate respondsToSelector:@selector(refactoringView:text:)]) view = [self.delegate refactoringView:view text:text];
     
+    CGFloat setMaxY = [self getBarrageHeightWithRow:row rowHeight:view.frame.size.height];
+    view.frame = CGRectMake(self.frame.size.width, setMaxY, view.frame.size.width, view.frame.size.height);
+
     CGFloat intervalTime  = [self getIntervalTimeWithBarrageWidth:barrageWidth];
     CGFloat showTime = [self getShowTimeWithBarrageWidth:barrageWidth];
     
@@ -162,11 +167,11 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
     
     [UIView animateWithDuration:showTime delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         
-        label.frame = CGRectMake(- barrageWidth, maxY, barrageWidth, self.barrageStyle.barrageHeight);
+        view.frame = CGRectMake(- view.frame.size.width, view.frame.origin.y, view.frame.size.width, view.frame.size.height);
         
     } completion:^(BOOL finished) {
         
-        [self.reusePool addObject:label];
+        [self.reusePool addObject:view];
         if (finishShow) finishShow();
     }];
 }
@@ -203,42 +208,43 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
     return 0;
 }
 
-- (UILabel *)getBarrageLabel {
+- (UIView *)getBarrageView {
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, self.barrageStyle.barrageHeight)];
-    label.font = self.barrageStyle.barrageFont;
-    label.backgroundColor = self.barrageStyle.barrageBackgroundColor;
-    label.textAlignment = self.barrageStyle.barrageTextAlignment;
-    [self addSubview:label];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, self.barrageStyle.barrageHeight)];
+    view.lj_barrageLabel = [[UILabel alloc] init];
+    [view addSubview:view.lj_barrageLabel];
+    view.lj_barrageLabel.frame = view.bounds;
+    view.lj_barrageLabel.font = self.barrageStyle.barrageFont;
+    view.backgroundColor = self.barrageStyle.barrageBackgroundColor;
+    view.lj_barrageLabel.textAlignment = self.barrageStyle.barrageTextAlignment;
+    view.userInteractionEnabled = NO;
+    [self addSubview:view];
     
-    return label;
+    return view;
 }
 
--(UILabel *)getReuseBarrageLabel{
+- (UIView *)getReuseBarrageLabel{
     
     @synchronized (self) {
         
-        UILabel *label = [self.reusePool anyObject];
-        if (label) {
-            [self.reusePool removeObject:label];
-            return label;
+        UIView *view = [self.reusePool anyObject];
+        if (view) {
+            [self.reusePool removeObject:view];
+            return view;
         }
-        label = [self getBarrageLabel];
-        return label;
+        view = [self getBarrageView];
+        return view;
     }
 }
 
 - (void)setBarrageText:(NSString *)barrageText {
+    if (self.barrageSwitchType == BarrageTypeShut) return;
     [self.texts addObject:barrageText];
     [self start];
 }
 
-- (void)setBarrageMutableText:(NSMutableAttributedString *)barrageMutableText {
-    [self.texts addObject:barrageMutableText];
-    [self start];
-}
-
 - (void)setBarrageTexts:(NSArray *)barrageTexts {
+    if (self.barrageSwitchType == BarrageTypeShut) return;
     [self.texts addObjectsFromArray:barrageTexts];
     [self start];
 }
@@ -254,9 +260,10 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
 
 - (void)showWithRow:(NSInteger)row {
     
+    if (self.barrageSwitchType == BarrageTypeShut) return;
     self.barrageShowType = BarrageTypeStart;
     
-    if (self.texts.count <= self.nextNum) return;
+    if (!self.texts || self.texts.count <= self.nextNum) return;
     
     id text = [self.texts[self.nextNum] mutableCopy];
     
@@ -283,7 +290,7 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
                 blockText = nil;
             } finishShow:^{
                 
-                [strongSelf.texts removeObjectAtIndex:0];
+                if (strongSelf.texts && strongSelf.texts.count) [strongSelf.texts removeObjectAtIndex:0];
                 strongSelf.nextNum--;
                 if (!strongSelf.nextNum) {
                     strongSelf.barrageShowType = BarrageTypeStop;
@@ -306,15 +313,15 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
     return self.texts.count > self.nextNum && [self isHaveFreeLine];
 }
 
-- (CGFloat)getBarrageHeightWithRow:(NSInteger)row {
+- (CGFloat)getBarrageHeightWithRow:(NSInteger)row rowHeight:(CGFloat)rowHeight {
     
     switch (self.barrageHeightType) {
         case BarrageHeightTypeNormal:
             
-            return self.barrageRowHeight *row;
+            return rowHeight *row;
         case BarrageHeightTypeRandom:
         {
-            NSInteger arcInt = [[NSString stringWithFormat:@"%f",(int)self.frame.size.height - self.barrageStyle.barrageHeight] integerValue];
+            NSInteger arcInt = [[NSString stringWithFormat:@"%f",(int)self.frame.size.height - rowHeight] integerValue];
             if (arcInt) return arc4random() % arcInt;
             return 0;
         }
@@ -378,7 +385,7 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
 
 - (void)loadTapGesture {
     
-    if ([_delegate respondsToSelector:@selector(clickBarrageWithLabel:text:)]) {
+    if ([_delegate respondsToSelector:@selector(clickBarrageWithView:text:)]) {
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickBarrage:)];
         gesture.numberOfTapsRequired = 1;
         [self addGestureRecognizer:gesture];
@@ -389,12 +396,12 @@ static const BarrageSwitchType LJBarrageSwitchType = BarrageTypeShut;
     
     CGPoint touchPoint = [gesture locationInView:self];
     for(UIView *subView in self.subviews){
-        if([subView isKindOfClass:[UILabel class]]){
+        if([subView isKindOfClass:[UIView class]]){
             CALayer *layer = subView.layer.presentationLayer;
             if(CGRectContainsPoint(layer.frame, touchPoint)){
-                UILabel *label = (UILabel *)subView;
-                if ([self.delegate respondsToSelector:@selector(clickBarrageWithLabel:text:)]) {
-                    [self.delegate clickBarrageWithLabel:label text:label.lj_barrageText];
+                UIView *view = (UIView *)subView;
+                if ([self.delegate respondsToSelector:@selector(clickBarrageWithView:text:)]) {
+                    [self.delegate clickBarrageWithView:view text:view.lj_barrageText];
                 }
             }
         }

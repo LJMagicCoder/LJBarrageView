@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AB0ACC1522930AE600B64E19 /* UILabel+LJBarrageBind.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0ACC1422930AE600B64E19 /* UILabel+LJBarrageBind.m */; };
 		AB6025511FA42394002B3B24 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6025501FA42394002B3B24 /* main.m */; };
 		AB6025541FA42394002B3B24 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6025531FA42394002B3B24 /* AppDelegate.m */; };
 		AB6025571FA42394002B3B24 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6025561FA42394002B3B24 /* ViewController.m */; };
@@ -18,6 +17,7 @@
 		AB6025751FA42394002B3B24 /* BarrageDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6025741FA42394002B3B24 /* BarrageDemoUITests.m */; };
 		ABAB2EE521099E3F00106328 /* UIView+LJBarrageTool.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAB2EE321099E3F00106328 /* UIView+LJBarrageTool.m */; };
 		ABAB2EE621099E3F00106328 /* LJBarrageView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAB2EE421099E3F00106328 /* LJBarrageView.m */; };
+		ABE50436229AA54C001BA696 /* UIView+LJBarrageBind.m in Sources */ = {isa = PBXBuildFile; fileRef = ABE50435229AA54C001BA696 /* UIView+LJBarrageBind.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,8 +38,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AB0ACC1322930AE600B64E19 /* UILabel+LJBarrageBind.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UILabel+LJBarrageBind.h"; sourceTree = "<group>"; };
-		AB0ACC1422930AE600B64E19 /* UILabel+LJBarrageBind.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UILabel+LJBarrageBind.m"; sourceTree = "<group>"; };
 		AB60254C1FA42394002B3B24 /* BarrageDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BarrageDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB6025501FA42394002B3B24 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AB6025521FA42394002B3B24 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -60,6 +58,8 @@
 		ABAB2EE221099E3F00106328 /* UIView+LJBarrageTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LJBarrageTool.h"; sourceTree = "<group>"; };
 		ABAB2EE321099E3F00106328 /* UIView+LJBarrageTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LJBarrageTool.m"; sourceTree = "<group>"; };
 		ABAB2EE421099E3F00106328 /* LJBarrageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJBarrageView.m; sourceTree = "<group>"; };
+		ABE50434229AA54C001BA696 /* UIView+LJBarrageBind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LJBarrageBind.h"; sourceTree = "<group>"; };
+		ABE50435229AA54C001BA696 /* UIView+LJBarrageBind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LJBarrageBind.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,8 +157,8 @@
 				ABAB2EE421099E3F00106328 /* LJBarrageView.m */,
 				ABAB2EE221099E3F00106328 /* UIView+LJBarrageTool.h */,
 				ABAB2EE321099E3F00106328 /* UIView+LJBarrageTool.m */,
-				AB0ACC1322930AE600B64E19 /* UILabel+LJBarrageBind.h */,
-				AB0ACC1422930AE600B64E19 /* UILabel+LJBarrageBind.m */,
+				ABE50434229AA54C001BA696 /* UIView+LJBarrageBind.h */,
+				ABE50435229AA54C001BA696 /* UIView+LJBarrageBind.m */,
 			);
 			name = LJBarrageView;
 			path = ../../Classes/LJBarrageView;
@@ -297,11 +297,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABE50436229AA54C001BA696 /* UIView+LJBarrageBind.m in Sources */,
 				AB6025571FA42394002B3B24 /* ViewController.m in Sources */,
 				ABAB2EE521099E3F00106328 /* UIView+LJBarrageTool.m in Sources */,
 				AB6025541FA42394002B3B24 /* AppDelegate.m in Sources */,
 				AB6025511FA42394002B3B24 /* main.m in Sources */,
-				AB0ACC1522930AE600B64E19 /* UILabel+LJBarrageBind.m in Sources */,
 				ABAB2EE621099E3F00106328 /* LJBarrageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

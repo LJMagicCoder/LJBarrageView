@@ -24,7 +24,10 @@ typedef NS_ENUM(NSUInteger,BarrageHeightType) {
 @optional   
 
 //重构弹幕样式
-- (UILabel *)refactoringLabel:(UILabel *)label text:(id)text;
+- (UIView *)refactoringView:(UIView *)view text:(id)text;
+
+//单次点击弹幕
+- (void)clickBarrageWithView:(UIView *)view text:(id)text;
 
 //单次点击弹幕
 - (void)clickBarrageWithLabel:(UILabel *)label text:(id)text;
@@ -87,7 +90,7 @@ typedef NS_ENUM(NSUInteger,BarrageHeightType) {
 /*!@brief 打开弹幕 */
 - (void)open;
 
-/*!@brief 关闭弹幕 */
+/*!@brief 关闭弹幕 (不再接收数据，并清空数据)(销毁界面时续调用)*/
 - (void)shut;
 
 @end

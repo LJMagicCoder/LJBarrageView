@@ -40,7 +40,7 @@
     
     //传入数据（模拟长连接不断地传）
     [self.barrageView lj_addBarrageText:[NSString stringWithFormat:@"test-test-test-test-test-test"]];
-
+    
     for (int i = 0; i < 20; i++) {
         [self.barrageView lj_addBarrageText:[NSString stringWithFormat:@"test%d",i]];
         [self.barrageView lj_addBarrageText:[NSString stringWithFormat:@"test-test%d",i]];
@@ -65,20 +65,26 @@
 
 #pragma mark - <LJBarrageViewDelegate>
 
-- (UILabel *)refactoringLabel:(UILabel *)label text:(id)text {
+//重构弹幕样式
+- (UIView *)refactoringView:(UIView *)view text:(id)text {
     //这里重写label样式
-    return label;
+    return view;
 }
 
 //单次点击弹幕
-- (void)clickBarrageWithLabel:(UILabel *)label text:(id)text {
-    NSLog(@"click text = %@", text);
+- (void)clickBarrageWithView:(UIView *)view text:(id)text {
+    
+    NSLog(@"%@",text);
+}
+
+- (void)dealloc {
+    // 销毁界面时需释放
+    [self.barrageView shut];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 @end
